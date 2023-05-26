@@ -1,8 +1,8 @@
 import logo from "./logo.svg"
-import { Counter } from "./features/counter/Counter"
 import "./App.css"
-import { Box, Container, TextField } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { SplitList } from "./features/splitList/SplitList";
+import { Counter } from "./features/counter/Counter"
 
 function App() {
   return (
