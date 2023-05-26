@@ -1,29 +1,40 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from "../../app/store"
 
-export interface SplitedTextState {
+export interface NormalTextState {
    value: string
 }
 
-const initialState : SplitedTextState = {
+export interface SplitTextState {
+   value: []
+}
+
+const initialTextState : NormalTextState = {
    value: ""
 }
 
-export const splitedTextSlice = createSlice({
-   name: "splitText",
-   initialState,
+const  initialSplitText : SplitTextState = {
+   value: []
+}
+
+export const normalTextSlice = createSlice({
+   name: "normalText",
+   initialState: initialTextState,
    reducers: {
-      split: (state, action: PayloadAction<string>) => {
+      writeText: (state, action: PayloadAction<string>) => {
          state.value = action.payload
-         console.log(state.value)
-         console.log(action.payload)
-         
-      }
+      },
    }
 })
 
-export const { split } = splitedTextSlice.actions
+// export const splitedTextSlice = createSlice({
+//    name: "splitedText",
+//    initial
+// })
 
-export const selectSplitedText = (state: RootState) => state.textSplit.value
+export const { writeText } = normalTextSlice.actions
 
-export default splitedTextSlice.reducer
+//Selectors
+export const selectNormalText = (state: RootState) => state.normalText.value
+
+export default normalTextSlice.reducer

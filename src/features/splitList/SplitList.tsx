@@ -1,7 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectSplitedText, split } from "./splitListSlice";
+import { selectNormalText, writeText } from "./splitListSlice";
 
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 70 },
@@ -29,7 +29,7 @@ const rows = [
 
 export function SplitList() {
 
-   const textFromStore = useAppSelector(selectSplitedText)
+   const textFromStore = useAppSelector(selectNormalText)
    const dispatch = useAppDispatch()
 
    return (
@@ -43,7 +43,7 @@ export function SplitList() {
             rows={10}
             margin="normal"
             value={textFromStore}
-            onChange = {(e) => dispatch(split(e.target.value))}
+            onChange = {(e) => dispatch(writeText(e.target.value))}
          />
          <DataGrid
             rows={rows}
