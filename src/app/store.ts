@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import counterReducer from "../features/counter/counterSlice"
 import normalTextReducer from "../features/splitList/splitListSlice"
+import splitedTextReducer from "../features/splitList/splitListSlice"
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    normalText: normalTextReducer
+    counterStore: counterReducer,
+    normalTextStore: normalTextReducer,
+    splitedTextStore: splitedTextReducer
   }
 })
 
