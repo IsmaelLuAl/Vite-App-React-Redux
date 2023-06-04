@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectNormalText, split, writeText } from "./splitListSlice";
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectNormalText, selectSplitedText, split, writeText } from "./splitListSlice";
 
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 70 },
@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
       sortable: false,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
-         `${params.row.id || ''} ${params.row.split || ''}`,
+         `${params.row.id || ''} - ${params.row.split || ''}`,
    },
 ];
 
@@ -25,12 +25,12 @@ const rows = [
    { id: 5, split: 'Targaryen' },
    { id: 6, split: 'Melisandre' },
    { id: 7, split: 'Clifford' },
-];
+]
 
 export function SplitList() {
 
    const textFromStore = useAppSelector(selectNormalText)
-   
+   const rowsFromStore = useAppSelector(selectSplitedText)
    const dispatch = useAppDispatch()
 
    return (
@@ -48,7 +48,7 @@ export function SplitList() {
          />
          <Button onClick={() => dispatch(split(textFromStore))}>SPLIT</Button>
          <DataGrid
-            rows={rows}
+            rows={rowsFromStore}
             columns={columns}
             initialState={{
                pagination: {

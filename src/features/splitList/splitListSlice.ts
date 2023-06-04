@@ -6,7 +6,7 @@ export interface NormalTextState {
 }
 
 export interface SplitTextState {
-   value: string[]
+   value: {}
 }
 
 const initialTextState : NormalTextState = {
@@ -14,7 +14,15 @@ const initialTextState : NormalTextState = {
 }
 
 const  initialSplitText : SplitTextState = {
-   value: []
+   value: [{ id: 1, split: 'Temp' }]
+}
+
+// const rowsArray = any[]
+// const rowsArray = new Array<{}>()
+
+interface RowsInterface {
+   id: number,
+   code: string
 }
 
 export const normalTextSlice = createSlice({
@@ -33,8 +41,13 @@ export const splitedTextSlice = createSlice({
    reducers: {
       split: (state, action: PayloadAction<string>) => {
          //Cortar el texto en partes y incluirlas en un array
-         state.value = action.payload.split(/[!\s_]+/)
-         console.log(state.value);
+         let tempArray = action.payload.split(/[" "!;:,.\s\t\n_]+/)
+         let rowsArray: RowsInterface[] = []
+         tempArray.map((e, indice) => {
+            // rowsArray.push({id: indice, code:e})
+            rowsArray = [...rowsArray, {id: indice, code:e}];         
+         })
+         state.value = rowsArray
       }
    }
 })
