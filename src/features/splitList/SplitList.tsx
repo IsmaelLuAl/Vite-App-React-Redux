@@ -3,9 +3,10 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectNormalText, selectSplitedText, split, writeText } from "./splitListSlice";
 
+//Importante el campo "field" tiene que tener el mismo nombre que el elemento del array y sino no podrá mostrar el contenido
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 70 },
-   { field: 'split', headerName: 'Split', width: 130 },
+   { field: 'code', headerName: 'Code', width: 130 },
    {
       field: 'fullName',
       headerName: 'Full name',
@@ -13,18 +14,18 @@ const columns: GridColDef[] = [
       sortable: false,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
-         `${params.row.id || ''} - ${params.row.split || ''}`,
+         `${params.row.id || ''} - ${params.row.code || ''}`,
    },
 ];
 
 const rows = [
-   { id: 1, split: 'Snow' },
-   { id: 2, split: 'Lannister' },
-   { id: 3, split: 'Lannister' },
-   { id: 4, split: 'Stark' },
-   { id: 5, split: 'Targaryen' },
-   { id: 6, split: 'Melisandre' },
-   { id: 7, split: 'Clifford' },
+   { id: 1, code: 'Snow' },
+   { id: 2, code: 'Lannister' },
+   { id: 3, code: 'Lannister' },
+   { id: 4, code: 'Stark' },
+   { id: 5, code: 'Targaryen' },
+   { id: 6, code: 'Melisandre' },
+   { id: 7, code: 'Clifford' },
 ]
 
 export function SplitList() {

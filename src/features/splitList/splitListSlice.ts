@@ -14,7 +14,7 @@ const initialTextState : NormalTextState = {
 }
 
 const  initialSplitText : SplitTextState = {
-   value: [{ id: 1, split: 'Temp' }]
+   value: [{ id: 1, code: 'Temp' }]
 }
 
 // const rowsArray = any[]
@@ -57,7 +57,7 @@ export const { split } = splitedTextSlice.actions
 
 //Selectors
 export const selectNormalText = (state: RootState) => state.normalTextStore.normalTextReducer.value
-export const selectSplitedText = (state: RootState) => state.normalTextStore.splitedTextReducer.value
+export const selectSplitedText = (state: RootState) => state.splitedTextStore.splitedTextReducer.value
 
 // export default normalTextSlice.reducer
 
