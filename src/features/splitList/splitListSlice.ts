@@ -40,14 +40,15 @@ export const splitedTextSlice = createSlice({
    initialState: initialSplitText,
    reducers: {
       split: (state, action: PayloadAction<string>) => {
-         //Cortar el texto en partes y incluirlas en un array
-         let tempArray = action.payload.split(/[" "!;:,.\s\t\n_]+/)
-         let rowsArray: RowsInterface[] = []
-         tempArray.map((e, indice) => {
-            // rowsArray.push({id: indice, code:e})
-            rowsArray = [...rowsArray, {id: indice, code:e}];         
+         let trimmedPayload = action.payload.replace(/[" "!;:,.\s\t\n_]+$/, '');
+         let duplicatedArray = trimmedPayload.split(/[" "!;:,.\s\t\n_]+/)
+         let tempArray = duplicatedArray.filter((e, i) => {
+            return duplicatedArray.indexOf(e) === i
          })
-         state.value = rowsArray
+         let rowsArray: RowsInterface[] = tempArray.map((e, indice) => {
+            return {id: indice, code:e};
+         })
+         state.value = rowsArray;
       }
    }
 })

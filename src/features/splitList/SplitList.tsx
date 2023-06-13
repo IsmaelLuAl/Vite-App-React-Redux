@@ -2,6 +2,7 @@ import { Box, Button, TextField } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectNormalText, selectSplitedText, split, writeText } from "./splitListSlice";
+import DropFile from "../dropFile/DropFile";
 
 //Importante el campo "field" tiene que tener el mismo nombre que el elemento del array y sino no podrá mostrar el contenido
 const columns: GridColDef[] = [
@@ -14,18 +15,8 @@ const columns: GridColDef[] = [
       sortable: false,
       width: 160,
       valueGetter: (params: GridValueGetterParams) =>
-         `${params.row.id || ''} - ${params.row.code || ''}`,
+      `${params.row.id !== null && params.row.id !== undefined ? params.row.id : ''} - ${params.row.code || ''}`,
    },
-];
-
-const rows = [
-   { id: 1, code: 'Snow' },
-   { id: 2, code: 'Lannister' },
-   { id: 3, code: 'Lannister' },
-   { id: 4, code: 'Stark' },
-   { id: 5, code: 'Targaryen' },
-   { id: 6, code: 'Melisandre' },
-   { id: 7, code: 'Clifford' },
 ]
 
 export function SplitList() {
@@ -36,7 +27,7 @@ export function SplitList() {
 
    return (
       <Box className="textFieldBox">
-         <span>{textFromStore}</span>
+         {/* <span>{textFromStore}</span> */}
          <TextField
             id='multiline-input-text'
             label='Text non splitted'
@@ -47,6 +38,7 @@ export function SplitList() {
             value={textFromStore}
             onChange = {(e) => dispatch(writeText(e.target.value))}
          />
+         <DropFile/>
          <Button onClick={() => dispatch(split(textFromStore))}>SPLIT</Button>
          <DataGrid
             rows={rowsFromStore}
