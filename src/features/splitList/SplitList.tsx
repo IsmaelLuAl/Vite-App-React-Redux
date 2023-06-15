@@ -1,10 +1,24 @@
-import { Box, Button, TextField } from "@mui/material";
+import React, {useState, useCallback} from 'react';
+import { Box, Button, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { selectNormalText, selectSplitedText, split, writeText } from "./splitListSlice";
-import DropFile from "../dropFile/DropFile";
+import { getGeneID, selectNormalText, selectSplitedText, split, writeText } from "./splitListSlice";
+import DroppableTextArea from '../droppableTextArea/DroppabletextArea';
 
-//Importante el campo "field" tiene que tener el mismo nombre que el elemento del array y sino no podrá mostrar el contenido
+function SplitButton() {
+   const textFromStore = useAppSelector(selectNormalText);
+   const dispatch = useAppDispatch();
+   
+   const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      dispatch(split(textFromStore));
+   }, [dispatch, textFromStore]);
+
+   return (
+      <Button variant="contained" color="primary" onClick={handleClick}>Split!</Button>
+   );
+}
+
+//Importante el campo "field" tiene que tener el mismo nombre que el elemento del array o sino no podrá mostrar el contenido
 const columns: GridColDef[] = [
    { field: 'id', headerName: 'ID', width: 70 },
    { field: 'code', headerName: 'Code', width: 130 },
@@ -19,27 +33,17 @@ const columns: GridColDef[] = [
    },
 ]
 
-export function SplitList() {
+function SplitList() {
 
-   const textFromStore = useAppSelector(selectNormalText)
-   const rowsFromStore = useAppSelector(selectSplitedText)
-   const dispatch = useAppDispatch()
+   const [error, setError] = useState("");
+   const rowsFromStore = useAppSelector(selectSplitedText);
 
    return (
       <Box className="textFieldBox">
-         {/* <span>{textFromStore}</span> */}
-         <TextField
-            id='multiline-input-text'
-            label='Text non splitted'
-            multiline
-            fullWidth
-            rows={10}
-            margin="normal"
-            value={textFromStore}
-            onChange = {(e) => dispatch(writeText(e.target.value))}
-         />
-         <DropFile/>
-         <Button onClick={() => dispatch(split(textFromStore))}>SPLIT</Button>
+         <DroppableTextArea onError={setError}/>         
+         {!!error && <Typography variant="caption">ERROR: {error}</Typography>}
+         <SplitButton/>
+         {/* <Button onClick={() => getGeneID}>Petición Fetch</Button> */}
          <DataGrid
             rows={rowsFromStore}
             columns={columns}
@@ -50,10 +54,9 @@ export function SplitList() {
             }}
             pageSizeOptions={[20, 50]}
             checkboxSelection
-            // // El atributo sx sirve para poder sobreescribir el css de la libreria
-            // sx={{
-            // }}
          />
       </Box>
    ) 
 }
+
+export default SplitList;

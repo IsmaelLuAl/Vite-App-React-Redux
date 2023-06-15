@@ -17,14 +17,67 @@ const  initialSplitText : SplitTextState = {
    value: [{ id: 1, code: 'Temp' }]
 }
 
-// const rowsArray = any[]
-// const rowsArray = new Array<{}>()
-
 interface RowsInterface {
    id: number,
    code: string
 }
+/////////////////////////////////////////////////////////////////////////////////////////////
 
+export const getGeneID = () => {
+   const url = "http://cellbase.clinbioinfosspa.es/cellbase-4.6.3/webservices/rest/v4/hsapiens/feature/gene/search?assembly=grch37&limit=-1&skip=-1&skipCount=false&count=false&Output%20format=json&name=BRCA2"
+   const petition = fetch(url)
+
+   petition
+      .then((data) => data.json())
+      .then((reading) => {
+         console.log(reading.value)
+      })
+      .catch()
+}
+
+// The function below is called a thunk and allows us to perform async logic. It
+// can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
+// will call the thunk with the `dispatch` function as the first argument. Async
+// code can then be executed and other actions can be dispatched. Thunks are
+// typically used to make async requests.
+
+// export const incrementAsync = createAsyncThunk(
+//    "counter/fetchCount",
+//    async (amount: number) => {
+//       const response = await fetchCount(amount)
+//      // The value we return becomes the `fulfilled` action payload
+//       return response.data
+//    },
+//    )
+
+//    const [joke, setJoke] = useState("There's still no jokes");
+
+//    function nextjoke() {
+//       const url = "https://api.chucknorris.io/jokes/random/";
+//       const peticion = fetch(url);
+
+//       peticion
+//       .then((datos) => datos.json())
+//       .then((lectura) => {
+//          setJoke(lectura.value)
+//       })
+//       .catch(console.log("Error"));
+//    }
+
+//    useEffect(() => {
+//       nextjoke();
+//    }, []);
+
+//    return (
+//       <>
+//       <div>{joke}</div>
+//       <button onClick={nextjoke} value="Next Joke!">
+//          Next joke!
+//       </button>
+//       </>
+//    )
+
+ /////////////////////////////////////////////////////////////////////////////////////////////
 export const normalTextSlice = createSlice({
    name: "normalTextSlice",
    initialState: initialTextState,
@@ -59,8 +112,6 @@ export const { split } = splitedTextSlice.actions
 //Selectors
 export const selectNormalText = (state: RootState) => state.normalTextStore.normalTextReducer.value
 export const selectSplitedText = (state: RootState) => state.splitedTextStore.splitedTextReducer.value
-
-// export default normalTextSlice.reducer
 
 export default combineReducers({
    normalTextReducer: normalTextSlice.reducer, 
