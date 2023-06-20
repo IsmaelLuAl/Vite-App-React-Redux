@@ -24,7 +24,7 @@ function DroppableTextArea({ onError }: { onError: (msg: string) => void }) {
       e.preventDefault();
 
       if (0 === fileCount) {
-         onError("Please select a File")
+         // onError("Please select a File")
       } else if (1 === fileCount) {
          const file = e.dataTransfer.files[0];
          if (MAX_SIZE < file.size) {
