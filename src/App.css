@@ -89,3 +89,7 @@
   bottom: 0px;
   left: 0px;
 }
+
+.error-row {
+  background-color: #db4a39; /* Aplica el color rojo a las filas con código 404 */
+}

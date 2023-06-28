@@ -29,3 +29,4 @@ build
 # Miscellaneous
 *.local
 cspell.json
+.vscode/settings.json

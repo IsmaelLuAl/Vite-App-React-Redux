@@ -5,13 +5,13 @@ export interface NormalTextState {
 	value: string
 }
 export interface SplitTextState {
-	value: [{}]
+	value: string[]
 }
 const initialTextState: NormalTextState = {
 	value: "",
 }
 const initialSplitText: SplitTextState = {
-	value: [{ id: 1, code: "Temp", geneID: 1 }],
+	value: [""],
 }
 
 export const normalTextSlice = createSlice({
