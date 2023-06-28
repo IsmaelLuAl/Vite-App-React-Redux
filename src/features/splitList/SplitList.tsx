@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from "react"
 import { Box, Button, Typography } from "@mui/material"
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectNormalText, selectSplitedText, split } from "./splitListSlice"
 import DroppableTextArea from '../droppableTextArea/DroppabletextArea'
@@ -8,8 +7,9 @@ import CellbaseClient from '../../clients/CellbaseClient'
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgress from '@mui/material/CircularProgress'
+import GeneGrid from "../geneGrid/GeneGrid"
 
-function SplitButton( { onChange }: { onChange: (active: boolean) => void }) {
+function SplitButton() {
    const [isLoading, setLoading] = useState(false)
    const textFromStore = useAppSelector(selectNormalText);
    const dispatch = useAppDispatch();
@@ -30,6 +30,7 @@ function SplitButton( { onChange }: { onChange: (active: boolean) => void }) {
          const abortController = new AbortController();
          controllerRef.current = abortController;
 
+         
          await Promise.all(tempArray.map(async (geneStr, index) => {
             const { signal } = abortController
             const results = await instance.getGeneID(geneStr, signal);
@@ -64,23 +65,6 @@ function SplitList() {
    const [ isLoading, setLoading] = useState(false)
    const rowsFromStore = useAppSelector(selectSplitedText);
    const controllerRef = useRef<AbortController | null>(null);
-   const columns: GridColDef[] = [
-      { field: 'code', headerName: 'Code', width: 150 },
-      { field: 'geneIds', headerName: "Gene ID's", width: 200 },
-      {
-         field: 'status',
-         headerName: 'Status',
-         width: 100,
-         renderCell: (params) => {
-            const status = params.value;
-            return (
-               <Box display="flex" alignItems="center">
-                  {status ? <DoneIcon style = {{color: "#008744"}} /> : <CloseIcon style={{ color: "#d62d20"}}/>}
-               </Box>
-            )
-         }
-      }
-   ]
 
    const handleChildLoadingChange = (newState: boolean) => {
       setLoading(newState);
@@ -94,27 +78,20 @@ function SplitList() {
       }
    }, [])
 
+   const [genes, setGenes] = useState([] as string[]);
+   useEffect(() => {
+      const names = rowsFromStore.map((x: any) => (x["code"] || "") as string);
+      setGenes(names);
+   }, [rowsFromStore, setGenes]);
+
+
    return (
       <Box className="textFieldBox">
          <DroppableTextArea onError={setError} />
          {!!error && <Typography variant="caption">ERROR: {error}</Typography>}
-         <SplitButton onChange = {handleChildLoadingChange}/>
-         {isLoading ? (
-            <CircularProgress style = {{ margin: "20px auto" }} />
-         ) : (
-            <DataGrid
-            rows={rowsFromStore}
-            columns={columns}
-            // getRowClassName={getRowClassName}
-            initialState={{
-               pagination: {
-                  paginationModel: { page: 0, pageSize: 20 },
-               },
-            }}
-            pageSizeOptions={[20, 50]}
-            checkboxSelection
-         />
-         )}
+         <SplitButton/>
+         {!isLoading && <GeneGrid genes={genes} />}
+         {!!isLoading && <CircularProgress style = {{ margin: "20px auto" }} />}
       </Box>
    )
 }
