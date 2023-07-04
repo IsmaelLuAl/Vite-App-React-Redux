@@ -93,3 +93,7 @@
 .error-row {
   background-color: #db4a39; /* Aplica el color rojo a las filas con código 404 */
 }
+
+.geneTable {
+  margin-bottom: 40px;
+}

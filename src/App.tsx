@@ -11,7 +11,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
       </Box>
-      <SplitList/>
+      <SplitList />
     </Container>
   )
 }
